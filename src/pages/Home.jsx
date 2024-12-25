@@ -73,20 +73,27 @@ export const Home = () => {
               <p><Link to={`/lists/${selectListId}/edit`}>選択中のリストを編集</Link></p>
             </div>
           </div>
-          <ul className="list-tab">
-            {lists.map((list, key) => {
-              const isActive = list.id === selectListId;
-              return (
-                <li 
-                  key={key}
-                  className={`list-tab-item ${isActive ? "active" : ""}`}
-                  onClick={() => handleSelectList(list.id)}
+          {/*ここから5*/}
+          <ul className="list-tab" role="tablist">
+            {lists.map((list, key) => (
+                <li
+                    key={key}
+                    role="tab"
+                    tabIndex={selectListId === list.id ? 0 : -1}
+                    aria-selected={selectListId === list.id}
+                    className={`list-tab-item ${selectListId === list.id ? "active" : ""}`}
+                    onClick={() => handleSelectList(list.id)}
+                    onKeyDown={e => {
+                      const i = lists.findIndex(l => l.id === selectListId);
+                      if (e.key === 'ArrowRight') handleSelectList(lists[(i + 1) % lists.length].id);
+                      if (e.key === 'ArrowLeft') handleSelectList(lists[(i - 1 + lists.length) % lists.length].id);
+                    }}
                 >
                   {list.title}
                 </li>
-              )
-            })}
+            ))}
           </ul>
+          {/*ここまで*/}
           <div className="tasks">
             <div className="tasks-header">
               <h2>タスク一覧</h2>
