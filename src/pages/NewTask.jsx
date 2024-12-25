@@ -9,11 +9,13 @@ export const NewTask = () => {
   const [selectListId, setSelectListId] = useState();
   const [lists, setLists] = useState([]);
   const [title, setTitle] = useState("");
+  const [limit, setLimit] = useState("");
   const [detail, setDetail] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [cookies] = useCookies();
   const navigate = useNavigate();
   const handleTitleChange = (e) => setTitle(e.target.value);
+  const handleLimitChange = (e) => setLimit(e.target.value);
   const handleDetailChange = (e) => setDetail(e.target.value);
   const handleSelectList = (id) => setSelectListId(id);
   const onCreateTask = () => {
@@ -21,6 +23,9 @@ export const NewTask = () => {
       title: title,
       detail: detail,
       done: false,
+      // ここから4
+      limit: new Date(limit).toISOString(),
+      // ここまで
     };
 
     axios.post(`${url}/lists/${selectListId}/tasks`, data, {
@@ -58,16 +63,20 @@ export const NewTask = () => {
         <h2>タスク新規作成</h2>
         <p className="error-message">{errorMessage}</p>
         <form className="new-task-form">
-          <label>リスト</label><br />
+          <label>リスト</label><br/>
           <select onChange={(e) => handleSelectList(e.target.value)} className="new-task-select-list">
             {lists.map((list, key) => (
-              <option key={key} className="list-item" value={list.id}>{list.title}</option>
+                <option key={key} className="list-item" value={list.id}>{list.title}</option>
             ))}
-          </select><br />
-          <label>タイトル</label><br />
-          <input type="text" onChange={handleTitleChange} className="new-task-title" /><br />
-          <label>詳細</label><br />
-          <textarea type="text" onChange={handleDetailChange} className="new-task-detail" /><br />
+          </select><br/>
+          <label>タイトル</label><br/>
+          <input type="text" onChange={handleTitleChange} className="new-task-title"/><br/>
+          {/*ここから4*/}
+          <label>期限</label><br/>
+          <input type="datetime-local" onChange={handleLimitChange} className="new-task-limit"/><br/>
+          {/*ここまで*/}
+          <label>詳細</label><br/>
+          <textarea type="text" onChange={handleDetailChange} className="new-task-detail"/><br/>
           <button type="button" className="new-task-button" onClick={onCreateTask}>作成</button>
         </form>
       </main>
