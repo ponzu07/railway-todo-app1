@@ -1,0 +1,46 @@
+@mixin tablet {
+  @media screen and (max-width: 768px) { @content; }
+}
+
+@mixin mobile {
+  @media screen and (max-width: 320px) { @content; }
+}
+
+.taskList,
+.new-list,
+.new-task,
+.edit-task,
+.edit-list {
+  @include tablet {
+    width: 90%;
+  }
+}
+
+.signin,
+.signup {
+  @include tablet {
+    width: 80%;
+  }
+}
+
+.new-task-select-list,
+.new-task-title,
+.new-task-detail,
+.edit-task-title,
+.edit-task-detail,
+.edit-list-title,
+.email-input,
+.password-input,
+.name-input {
+  @include tablet {
+    width: 100%;
+  }
+}
+
+.list-header,
+.tasks-header {
+  @include mobile {
+    flex-direction: column;
+    gap: 10px;
+  }
+}
